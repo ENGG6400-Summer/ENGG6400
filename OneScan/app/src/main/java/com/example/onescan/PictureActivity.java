@@ -46,6 +46,8 @@ public class PictureActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
+        }else{
+            super.onActivityResult(requestCode,resultCode,data);
         }
     }
 
