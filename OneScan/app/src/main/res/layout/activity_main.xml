@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"/>
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageView_Main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -34,13 +34,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_Main"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/camera_icon" />
 
     <Button
         android:onClick="gotoAlbum"
-        android:id="@+id/button"
+        android:id="@+id/button_album_in_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -51,7 +51,7 @@
         app:layout_constraintEnd_toStartOf="@+id/imageButton"
         app:layout_constraintHorizontal_bias="0.29"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView_Main" />
 
     <Button
         android:onClick="gotoInstuction"
@@ -68,5 +68,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.925"
         app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView_Main" />
 </androidx.constraintlayout.widget.ConstraintLayout>

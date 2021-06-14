@@ -80,6 +80,7 @@ public class PictureActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
 //            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Toast.makeText(getApplicationContext(), photoFile.toString(), Toast.LENGTH_LONG).show();
             Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
             imageView.setImageBitmap(imageBitmap);
         }else{
