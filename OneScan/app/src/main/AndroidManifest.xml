@@ -23,7 +23,8 @@
 
         <activity android:name=".TestActivity"></activity>
         <activity android:name=".AlbumActivity" />
-        <activity android:name=".InstructionActivity" />
+        <activity android:name=".InstructionActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".PictureActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
