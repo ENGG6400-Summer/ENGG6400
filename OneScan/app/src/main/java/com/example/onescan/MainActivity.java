@@ -58,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, InstructionActivity.class);
         startActivity(intent);
     }
+    public void sampleresult(View v){
+        Intent intent = new Intent(this, DetailedActivity.class);
+        startActivity(intent);
+    }
 
     public void gotoPicture(View v){
         Intent intent = new Intent(this, PictureActivity.class);

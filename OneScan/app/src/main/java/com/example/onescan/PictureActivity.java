@@ -77,7 +77,7 @@ public class PictureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
 
-        imageView = findViewById(R.id.imageView);
+        imageView = findViewById(R.id.imageView_picture);
         button = findViewById(R.id.captureButton);
 
         button.setOnClickListener(new View.OnClickListener() {

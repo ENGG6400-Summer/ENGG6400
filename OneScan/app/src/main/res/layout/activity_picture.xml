@@ -5,9 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".PictureActivity">
 
+
     <com.example.onescan.CameraSurfaceView
 
         android:id="@+id/csf"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageView
+        android:id="@+id/imageView_picture"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
