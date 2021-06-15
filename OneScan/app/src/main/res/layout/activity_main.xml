@@ -5,80 +5,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <TextView
-        android:id="@+id/a111"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <ImageView
         android:id="@+id/imageView_Main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.589"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/popular_machine" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/button_album_in_main"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:backgroundTint="@color/black"
+                android:clickable="true"
+                android:text="Album"
+                app:layout_constraintEnd_toStartOf="@+id/imageButton" />
+            <ImageButton
+                android:onClick="gotoPicture"
+                android:id="@+id/imageButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="60dp"
+                android:background="#00FFFFFF"
+                android:clickable="true"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/camera_icon" />
+            <Button
+                android:onClick="gotoInstuction"
+                android:id="@+id/button2"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:backgroundTint="@color/black"
+                android:clickable="true"
+                android:text="?"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
 
-    <ImageButton
-        android:onClick="gotoPicture"
-        android:id="@+id/imageButton"
-        android:layout_width="126dp"
-        android:layout_height="95dp"
-        android:layout_marginTop="44dp"
-        android:background="#00FFFFFF"
-        android:clickable="true"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_Main"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/camera_icon" />
 
-    <Button
-        android:onClick="gotoAlbum"
-        android:id="@+id/button_album_in_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:background="@color/black"
-        android:backgroundTint="@color/black"
-        android:clickable="true"
-        android:text="Album"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
-        app:layout_constraintHorizontal_bias="0.29"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_Main" />
+    </LinearLayout>
 
-    <Button
-        android:onClick="gotoInstuction"
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="28dp"
-        android:background="@color/black"
-        android:backgroundTint="@color/black"
-        android:clickable="true"
-        android:text="?"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.925"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_Main" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="sampleresult"
-        android:text="SampleResult"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

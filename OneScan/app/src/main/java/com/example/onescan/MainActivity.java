@@ -49,11 +49,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void gotoAlbum(View v){
-        Intent intent = new Intent(this, AlbumActivity.class);
-        startActivity(intent);
-    }
-
     public void gotoInstuction(View v){
         Intent intent = new Intent(this, InstructionActivity.class);
         startActivity(intent);
@@ -93,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode==PICK_PHOTO && resultCode==RESULT_OK){
             // The returned URl is not a real URL, it is a input Stream
             Uri selectedImage = data.getData();
-            Intent intent = new Intent(this, AlbumActivity.class);
+            Intent intent = new Intent(this, DetailedActivity.class);
             intent.putExtra("imageUri", selectedImage);
             intent.putExtra("requestCode", GOT_SELECTED_IMAGE);
             startActivity(intent);

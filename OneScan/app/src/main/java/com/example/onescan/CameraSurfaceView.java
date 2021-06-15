@@ -1,6 +1,7 @@
 package com.example.onescan;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import static android.hardware.Camera.Parameters.FOCUS_MODE_AUTO;
 
 public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Camera.AutoFocusCallback, View.OnClickListener {
+    private final static int GOT_IMAGE_FROM_CAMERA = 999;
 
     //    protected static final int[] VIDEO_320 = {320, 240};
 //    protected static final int[] VIDEO_480 = {640, 480};
@@ -298,6 +300,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         if (mCamera == null) return;
 
         mCamera.autoFocus(this);
+
     }
 
     @Override
@@ -318,7 +321,11 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
                         bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                         FileUtil.saveBitmap(bitmap);
                         Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
-                        startPreview();
+                        Intent intent = new Intent(getContext(), DetailedActivity.class);
+                        intent.putExtra("requestCode", GOT_IMAGE_FROM_CAMERA);
+                        new GlobalVariables().setMyBitmap(bitmap);
+                        context.startActivity(intent);
+//                        startPreview();
                     }
                 });
             } catch (Exception e) {
