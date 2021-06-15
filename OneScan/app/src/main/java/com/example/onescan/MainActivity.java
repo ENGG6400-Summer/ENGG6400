@@ -2,9 +2,13 @@ package com.example.onescan;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,16 +24,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int CAMERA_PERMISSION_REQUEST_CODE = 3;
     Button button_album;
     ImageView imageView_main;
     private final static int PICK_PHOTO = 250;
     private final static int GOT_SELECTED_IMAGE = 666;
-    Uri selectedImageUri;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(!checkPermissionForCamera())
+            requestPermissionForCamera();
         imageView_main = findViewById(R.id.imageView_Main);
         button_album = findViewById(R.id.button_album_in_main);
 //        Set the onclick listener for the album button
@@ -56,6 +63,25 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PictureActivity.class);
         startActivity(intent);
     }
+    public boolean checkPermissionForCamera(){
+        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        if (result == PackageManager.PERMISSION_GRANTED){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void requestPermissionForCamera(){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)){
+            Toast.makeText(this, "Camera permission needed. Please allow in App Settings for additional functionality.", Toast.LENGTH_LONG).show();
+        } else {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},CAMERA_PERMISSION_REQUEST_CODE);
+        }
+    }
+
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

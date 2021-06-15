@@ -4,6 +4,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,12 +16,48 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+public class PictureActivity extends AppCompatActivity {
 
+    private CameraSurfaceView cameraSurfaceView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_picture);
+        cameraSurfaceView = findViewById(R.id.csf);
+
+    }
+
+    public void takePic(View view)
+    {
+
+        cameraSurfaceView.capture();
+    }
+
+
+
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cameraSurfaceView.closeCamera();
+    }
+
+
+}
+
+
+
+
+
+
+/*
 public class PictureActivity extends AppCompatActivity {
 //    https://www.youtube.com/watch?v=DPHkhamDoyc&t=198s
 //    https://developer.android.com/training/camera/photobasics
@@ -67,9 +104,9 @@ public class PictureActivity extends AppCompatActivity {
     private File getPhotoFile(String file_name) throws IOException {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                file_name,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+                file_name,
+                ".jpg",
+                storageDir
         );
         return image;
     }
@@ -94,9 +131,9 @@ public class PictureActivity extends AppCompatActivity {
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+                imageFileName,
+                ".jpg",
+                storageDir
         );
 
         // Save a file: path for use with ACTION_VIEW intents
@@ -106,3 +143,5 @@ public class PictureActivity extends AppCompatActivity {
 
 
 }
+*/
+
