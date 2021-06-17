@@ -62,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PictureActivity.class);
         startActivity(intent);
     }
+
+    public void gotoMachineLearning(View v){
+        Intent intent = new Intent(this, MachineLearningActivity.class);
+        startActivity(intent);
+    }
     public boolean checkPermissionForCamera(){
         int result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if (result == PackageManager.PERMISSION_GRANTED){
