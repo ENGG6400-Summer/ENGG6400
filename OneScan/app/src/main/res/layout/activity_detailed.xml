@@ -31,6 +31,7 @@
             app:srcCompat="@drawable/verticalimage" />
 
         <TextView
+            android:id="@+id/detailedpageinformationheader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFC107"

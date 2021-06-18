@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,15 +30,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
-public class MachineLearningActivity extends AppCompatActivity {
+public class MachineLearningActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     ImageView imageView;
     Button button_take_picture;
     Button button_make_predict;
     TextView textView_result;
     int SELECT_FROM_ALBUM_FOR_ML = 100;
     Bitmap bitmap;
+    private TextToSpeech mTextToSpeech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +52,9 @@ public class MachineLearningActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageViewforMachineLearning);
         Context context = this;
 
+        initTextToSpeech();
 
-
-        // important the label text file:
+        // important the labels text file:
         String filename = "labels.txt";
         ArrayList<String> alllabels = new ArrayList<>();
         Scanner scan = new Scanner(getResources().openRawResource(R.raw.labels));
@@ -96,6 +99,9 @@ public class MachineLearningActivity extends AppCompatActivity {
                     float[] myarray = outputFeature0.getFloatArray();
                     int max = getMax(myarray);
                     textView_result.setText(alllabels.get(max));
+                    if (mTextToSpeech != null && !mTextToSpeech.isSpeaking()) {
+                        mTextToSpeech.speak("pig pig mayson pig", TextToSpeech.QUEUE_FLUSH, null);
+                    }
 
                     // Releases model resources if no longer used.
                     model.close();
@@ -108,6 +114,7 @@ public class MachineLearningActivity extends AppCompatActivity {
 
 
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -137,5 +144,28 @@ public class MachineLearningActivity extends AppCompatActivity {
             }
         }
         return ind;
+    }
+
+    // try to read screen
+
+    private void initTextToSpeech() {
+        // Set Context,TextToSpeech.OnInitListener
+        mTextToSpeech = new TextToSpeech(this, this);
+        // Set Pitch Man -> Woman
+        mTextToSpeech.setPitch(1.0f);
+        // Set Speed
+        mTextToSpeech.setSpeechRate(0.5f);
+    }
+
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            int result = mTextToSpeech.setLanguage(Locale.CANADA);
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Toast.makeText(this, "Didn't find any Data to Read", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

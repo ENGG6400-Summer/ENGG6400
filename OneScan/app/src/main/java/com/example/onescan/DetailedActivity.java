@@ -7,14 +7,28 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.speech.tts.TextToSpeech;
 import android.text.method.LinkMovementMethod;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.FileNotFoundException;
+import org.tensorflow.lite.DataType;
+import org.tensorflow.lite.support.image.TensorImage;
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
+import org.w3c.dom.Text;
 
-public class DetailedActivity extends AppCompatActivity {
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Scanner;
+import com.example.onescan.ml.MobilenetV110224Quant;
+
+public class DetailedActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     private final static int GOT_SELECTED_IMAGE = 666;
     private final static int GOT_IMAGE_FROM_CAMERA = 999;
@@ -26,9 +40,18 @@ public class DetailedActivity extends AppCompatActivity {
     TextView textView2;
     TextView textView3;
     TextView textView4;
+    TextView textView5;
     Bitmap imageBitmap;
     String[] information;
+    String DeviceName;
+    private TextToSpeech mTextToSpeech;
+
+
 //    https://www.flaticon.com/free-icon/device_2905997?related_id=2905997
+//    Reference about how to read Screen
+//    https://www.jianshu.com/p/da6af26b7483
+//    Reference about how to do machine learning
+//    https://teachablemachine.withgoogle.com/train/image
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,34 +62,86 @@ public class DetailedActivity extends AppCompatActivity {
         textView2 = findViewById(R.id.textviewDeviceSop);
         textView3 = findViewById(R.id.textviewDeviceCali);
         textView4 = findViewById(R.id.textviewDeviceRecord);
+        textView5 = findViewById(R.id.detailedpageinformationheader);
+
+        initTextToSpeech();
 
         Intent intent= getIntent();
         int requestCode = intent.getExtras().getInt("requestCode");
 //        String rq = String.valueOf(requestCode);
-        String rq = "Picture Captured";
-        Toast.makeText(this, rq, Toast.LENGTH_SHORT).show();
+//        String rq = "Picture Captured";
+//        Toast.makeText(this, rq, Toast.LENGTH_SHORT).show();
+
+        // get the Bitmap imageBitmap from album
         if (requestCode==GOT_SELECTED_IMAGE){
             Uri selectedImage = intent.getParcelableExtra("imageUri");
-            Bitmap imageBitmap = null;
+            imageBitmap = null;
             try {
                 imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
             imageView.setImageBitmap(imageBitmap);
-
         }
-
+        // get the Bitmap imageBitmap from camera
         if (requestCode==GOT_IMAGE_FROM_CAMERA){
             imageBitmap = new GlobalVariables().getMyBitmap();
         }
 
-//        imageBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.babyshark1);
         information = new String[]{"BabyShark", "@string/pinkfongstr", "July-20-2021", "https://www.youtube.com/Pinkfong/featured"};
         // Load the Captured Image
         loadCapturedImage(imageBitmap);
-        loadInformation(information);
 
+        // important the labels text file:
+        String filename = "labels.txt";
+        ArrayList<String> alllabels = new ArrayList<>();
+        Scanner scan = new Scanner(getResources().openRawResource(R.raw.labels));
+        while (scan.hasNextLine()){
+            String line = scan.nextLine();
+            alllabels.add(line);
+        }
+        scan.close();
+
+
+        // Resize the image to 224x224
+        Bitmap resized_bitmap = Bitmap.createScaledBitmap(imageBitmap, 224,224,true);
+        try {
+            MobilenetV110224Quant model = MobilenetV110224Quant.newInstance(this);
+
+            // Creates inputs for reference.
+            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.UINT8);
+
+            // create byteBuffer from resized bitmap
+            TensorImage tbuffer = TensorImage.fromBitmap(resized_bitmap);
+            ByteBuffer byteBuffer = tbuffer.getBuffer();
+            inputFeature0.loadBuffer(byteBuffer);
+
+            // Runs model inference and gets result.
+            MobilenetV110224Quant.Outputs outputs = model.process(inputFeature0);
+            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+            float[] myarray = outputFeature0.getFloatArray();
+            int max = getMax(myarray);
+            DeviceName = alllabels.get(max);
+//            Toast.makeText(this, alllabels.get(max), Toast.LENGTH_SHORT).show();
+//            textView_result.setText(alllabels.get(max));
+
+            // Releases model resources if no longer used.
+            model.close();
+        } catch (IOException e) {
+            // TODO Handle the exception
+        }
+
+
+
+        loadInformation(information);
+        textView5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mTextToSpeech != null && !mTextToSpeech.isSpeaking()) {
+                    mTextToSpeech.speak(textView1.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+                }
+            }
+        });
     }
 
     private void loadCapturedImage(Bitmap imageBitmap) {
@@ -76,7 +151,7 @@ public class DetailedActivity extends AppCompatActivity {
     }
 
     private void loadInformation(String[] information){
-        textView1.setText(information[0]);
+        textView1.setText(DeviceName);
         textView2.setText(information[1]);
         textView2.setText(R.string.pinkfongstr);
         textView2.setMovementMethod(LinkMovementMethod.getInstance());
@@ -84,22 +159,49 @@ public class DetailedActivity extends AppCompatActivity {
         textView4.setText(information[3]);
         textView4.setText(R.string.pinkfongwiki);
         textView4.setMovementMethod(LinkMovementMethod.getInstance());
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                // Actions to do after 5 seconds
+                textView5.callOnClick();
+            }
+        }, 500);
+
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    private int getMax(float[] arr){
+        // return the index of the hightest value
+        int ind = 0;
+        float min = 0.0f;
 
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode==GOT_SELECTED_IMAGE){
-            Uri selectedImage = data.getParcelableExtra("imageUri");
-            Bitmap imageBitmap = null;
-            try {
-                imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+        for (int i =0; i<arr.length;i++){
+            if (arr[i]>min){
+                ind = i;
+                min = arr[i];
             }
-            imageView.setImageBitmap(imageBitmap);
+        }
+        return ind;
+    }
+
+    //try to read screen
+    private void initTextToSpeech() {
+        // Set Context,TextToSpeech.OnInitListener
+        mTextToSpeech = new TextToSpeech(this, this);
+        // Set Pitch Man -> Woman
+        mTextToSpeech.setPitch(1.0f);
+        // Set Speed
+        mTextToSpeech.setSpeechRate(0.5f);
+    }
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            int result = mTextToSpeech.setLanguage(Locale.CANADA);
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Toast.makeText(this, "Didn't find any Data to Read", Toast.LENGTH_SHORT).show();
+            }
         }
     }
-
 }
