@@ -24,8 +24,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OneScan">
-        <activity android:name=".MachineLearningActivity"></activity>
-        <activity android:name=".DetailedActivity" />
+        <activity android:name=".MachineLearningActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        <activity android:name=".DetailedActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -37,13 +41,21 @@
                 android:resource="@xml/fileprovider" />
         </provider>
 
-        <activity android:name=".TestActivity" />
-        <activity android:name=".AlbumActivity" />
+        <activity android:name=".TestActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".AlbumActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
             android:name=".InstructionActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".PictureActivity" />
-        <activity android:name=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".PictureActivity"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

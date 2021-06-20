@@ -1,5 +1,6 @@
 package com.example.onescan;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,7 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.onescan.ml.MobilenetV110224Quant;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.image.TensorImage;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
@@ -26,13 +27,16 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
-import com.example.onescan.ml.MobilenetV110224Quant;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class DetailedActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     private final static int GOT_SELECTED_IMAGE = 666;
     private final static int GOT_IMAGE_FROM_CAMERA = 999;
-
 
     ImageView imageView;
     // get the Global bitmap field
@@ -45,6 +49,7 @@ public class DetailedActivity extends AppCompatActivity implements TextToSpeech.
     String[] information;
     String DeviceName;
     private TextToSpeech mTextToSpeech;
+    private FirebaseAuth auth;
 
 
 //    https://www.flaticon.com/free-icon/device_2905997?related_id=2905997
@@ -64,13 +69,12 @@ public class DetailedActivity extends AppCompatActivity implements TextToSpeech.
         textView4 = findViewById(R.id.textviewDeviceRecord);
         textView5 = findViewById(R.id.detailedpageinformationheader);
 
+
+        // prepare for read screen
         initTextToSpeech();
 
         Intent intent= getIntent();
         int requestCode = intent.getExtras().getInt("requestCode");
-//        String rq = String.valueOf(requestCode);
-//        String rq = "Picture Captured";
-//        Toast.makeText(this, rq, Toast.LENGTH_SHORT).show();
 
         // get the Bitmap imageBitmap from album
         if (requestCode==GOT_SELECTED_IMAGE){
@@ -131,17 +135,27 @@ public class DetailedActivity extends AppCompatActivity implements TextToSpeech.
             // TODO Handle the exception
         }
 
+        // send data from activity to fragment (the the fragment know the name of the device
+        ((GlobalVariables) DetailedActivity.this.getApplication()).setDeviceName(DeviceName);
 
-
-        loadInformation(information);
-        textView5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mTextToSpeech != null && !mTextToSpeech.isSpeaking()) {
-                    mTextToSpeech.speak(textView1.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
-                }
+        // Read out the name of the item it recongized!!! This is the end of this activity;
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                // Actions to do after 5 seconds
+                mTextToSpeech.speak(DeviceName, TextToSpeech.QUEUE_FLUSH, null);
             }
-        });
+        }, 1500);
+
+//        loadInformation(information);
+//        textView5.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mTextToSpeech != null && !mTextToSpeech.isSpeaking()) {
+//                    mTextToSpeech.speak(textView1.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+//                }
+//            }
+//        });
     }
 
     private void loadCapturedImage(Bitmap imageBitmap) {
@@ -166,7 +180,7 @@ public class DetailedActivity extends AppCompatActivity implements TextToSpeech.
                 // Actions to do after 5 seconds
                 textView5.callOnClick();
             }
-        }, 500);
+        }, 1500);
 
     }
 
@@ -204,4 +218,5 @@ public class DetailedActivity extends AppCompatActivity implements TextToSpeech.
             }
         }
     }
+
 }

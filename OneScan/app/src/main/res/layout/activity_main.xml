@@ -31,9 +31,9 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:backgroundTint="@color/black"
+                android:background="@drawable/shape_corner"
                 android:clickable="true"
+                android:textSize="10pt"
                 android:text="Album"
                 app:layout_constraintEnd_toStartOf="@+id/imageButton" />
             <ImageButton
@@ -49,24 +49,25 @@
             <Button
                 android:onClick="gotoInstuction"
                 android:id="@+id/button2"
+                android:textSize="10pt"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:backgroundTint="@color/black"
+                android:background="@drawable/shape_corner"
                 android:clickable="true"
-                android:text="?"
+                android:text="HELP"
                 android:textColor="#FFFFFF"/>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="MachineLearning"
-            android:onClick="gotoMachineLearning"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <Button-->
+<!--            android:background="@drawable/shape_corner"-->
+<!--            android:id="@+id/button"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:text="MachineLearning"-->
+<!--            android:onClick="gotoMachineLearning"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
 
     </LinearLayout>
