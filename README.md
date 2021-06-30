@@ -1,8 +1,5 @@
-# ENGG6400
-This is the Course Project for ENGG6400 Mobile App Development
-
-Our goal is to build a Machine Learning Android App to automatically recognize something, say, different equipment in a chemical lab. When you camera is facing the equipment, it  can tell you what it is, where to find the SOP, when is the last calibrate date and the status for the last calibration.
-
+# ENGG6400 OneScan
+This is the Course Project for ENGG6400 S2021 Mobile App Development
 
 # The functional properties of this app:
 The functional properties of this app are:
