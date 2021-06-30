@@ -1,5 +1,6 @@
 package com.example.onescan;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -20,6 +21,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -29,15 +35,25 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageView_main;
     private final static int PICK_PHOTO = 250;
     private final static int GOT_SELECTED_IMAGE = 666;
+    private FirebaseAuth auth;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // check connection to firebase database
+        auth = FirebaseAuth.getInstance();
+        String username = "onescan@gmail.com";
+        String password = "password";
+        connectDatabase(username, password);
+
+        // check permission for camera
         if(!checkPermissionForCamera())
             requestPermissionForCamera();
         imageView_main = findViewById(R.id.imageView_Main);
+
         button_album = findViewById(R.id.button_album_in_main);
 //        Set the onclick listener for the album button
         button_album.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void gotoPicture(View v){
         Intent intent = new Intent(this, PictureActivity.class);
+        startActivity(intent);
+    }
+
+    public void gotoMachineLearning(View v){
+        Intent intent = new Intent(this, MachineLearningActivity.class);
         startActivity(intent);
     }
     public boolean checkPermissionForCamera(){
@@ -114,5 +135,21 @@ public class MainActivity extends AppCompatActivity {
         String s=cursor.getString(column_index);
         cursor.close();
         return s;
+    }
+
+    private void connectDatabase(String email, String password) {
+        auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(MainActivity.this, new  OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    ((GlobalVariables) MainActivity.this.getApplication()).setDatabaseConnected(true);
+                    Toast.makeText(MainActivity.this, "Database Connection Successful",Toast.LENGTH_SHORT).show();
+                }else{
+                    ((GlobalVariables) MainActivity.this.getApplication()).setDatabaseConnected(false);
+                    Toast.makeText(MainActivity.this, "Database Connection Failed,\nCan only display machine name",Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
     }
 }

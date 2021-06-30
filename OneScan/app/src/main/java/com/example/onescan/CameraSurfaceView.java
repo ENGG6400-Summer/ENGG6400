@@ -320,7 +320,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
                         }
                         bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                         FileUtil.saveBitmap(bitmap);
-                        Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getContext(), DetailedActivity.class);
                         intent.putExtra("requestCode", GOT_IMAGE_FROM_CAMERA);
                         new GlobalVariables().setMyBitmap(bitmap);

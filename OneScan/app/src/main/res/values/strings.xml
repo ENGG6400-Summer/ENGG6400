@@ -2,5 +2,7 @@
     <string name="app_name">OneScan</string>
     <string name="pinkfongstr"><a href="https://en.wikipedia.org/wiki/Pinkfong/">PinkFong Manual</a></string>
     <string name="pinkfongwiki"><a href="https://www.pinkfong.com/en/">PinkFong History Record</a></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

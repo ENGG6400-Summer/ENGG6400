@@ -31,6 +31,7 @@
             app:srcCompat="@drawable/verticalimage" />
 
         <TextView
+            android:id="@+id/detailedpageinformationheader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFC107"
@@ -47,7 +48,7 @@
         android:layout_height="0dp"
         android:layout_margin="5dp"
         android:padding="10dp"
-        android:layout_weight="1"
+        android:layout_weight="0"
         android:gravity="center"
         android:orientation="horizontal"
         android:background="#ffffff"
@@ -229,6 +230,13 @@
 
 
     </LinearLayout>
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:name="com.example.onescan.DetailFragment"
+            tools:layout="@layout/fragment_detail"
+            />
 
 
     </LinearLayout>
