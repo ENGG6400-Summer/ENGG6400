@@ -14,7 +14,7 @@ Approval|June 1st (Done)
 Proposal|June 7th (Done)
 Interim |June 15th (Done）
 Demo Day PPT |June 24th (Done)
-Final Report| July 2nd (on going)
+Final Report| July 2nd (Done)
 
 ## Proposal/Plan Presentation: June 7th•
 1. **Reprise Goal**
